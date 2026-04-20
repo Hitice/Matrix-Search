@@ -161,6 +161,12 @@
   .btn-danger:hover { background: rgba(255,68,68,0.1); }
   .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
   .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+  /* PRESETS */
+  .preset-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 20px; }
+  .preset-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px; font-size: 11px; font-weight: 600; border-radius: 4px; transition: all 0.2s; }
+  .preset-btn:hover { background: rgba(255,170,0,0.1); border-color: var(--accent); color: var(--accent); }
 
   /* CONSOLE */
   .console {
@@ -262,6 +268,18 @@
     </div>
 
     <div class="panel">
+      
+      <!-- Preset Buttons -->
+      <div style="font-size:12px; font-weight:600; color:var(--muted); margin-bottom:10px; text-transform:uppercase;">Atalhos de Puzzles (Auto-Preencher)</div>
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="applyPreset('v135')">Puzzle #135</button>
+        <button class="preset-btn" onclick="applyPreset('v140')">Puzzle #140</button>
+        <button class="preset-btn" onclick="applyPreset('v145')">Puzzle #145</button>
+        <button class="preset-btn" onclick="applyPreset('v150')">Puzzle #150</button>
+        <button class="preset-btn" onclick="applyPreset('v155')">Puzzle #155</button>
+        <button class="preset-btn" onclick="applyPreset('v160')">Puzzle #160</button>
+      </div>
+
       <div class="form-grid">
         <div class="input-grp">
           <label>Endereço Bitcoin Alvo</label>
@@ -362,8 +380,28 @@ function validate() {
   if (!V.addr.value.trim()) { V.addr.classList.add('error'); err=true; }
   if (V.pub.value.trim().length !== 66) { V.pub.classList.add('error'); err=true; }
   if (!V.start.value.trim() || !V.end.value.trim()) err=true;
-  if(err) showMsg("Review target parameters. Public key must be 66 hex characters.", true);
+  if(err) showMsg("Verifique os parâmetros do alvo. A chave pública deve ter 66 caracteres hexadecimais.", true);
   return !err;
+}
+
+// ─── PRESETS LOGIC ───
+const PUZZLES = {
+  v135: { addr: "16RGFo6hjq9ym6Pj7N5H7L1NR1rVPJyw2v", pub: "02145d2611c823a396ef6712ce0f712f09b9b4f3135e3e0aa3230fb9b6d08d1e16", start: "4000000000000000000000000000000000", end: "7fffffffffffffffffffffffffffffffff" },
+  v140: { addr: "1QKBaU6WAeycb3DbKbLBkX7vJiaS8r42Xo", pub: "031f6a332d3c5c4f2de2378c012f429cd109ba07d69690c6c701b6bb87860d6640", start: "80000000000000000000000000000000000", end: "fffffffffffffffffffffffffffffffffff" },
+  v145: { addr: "19GpszRNUej5yYqxXoLnbZWKew3KdVLkXg", pub: "03afdda497369e219a2c1c369954a930e4d3740968e5e4352475bcffce3140dae5", start: "1000000000000000000000000000000000000", end: "1ffffffffffffffffffffffffffffffffffff" },
+  v150: { addr: "1MUJSJYtGPVGkBCTqGspnxyHahpt5Te8jy", pub: "03137807790ea7dc6e97901c2bc87411f45ed74a5629315c4e4b03a0a102250c49", start: "20000000000000000000000000000000000000", end: "3fffffffffffffffffffffffffffffffffffff" },
+  v155: { addr: "1AoeP37TmHdFh8uN72fu9AqgtLrUwcv2wJ", pub: "035cd1854cae45391ca4ec428cc7e6c7d9984424b954209a8eea197b9e364c05f6", start: "400000000000000000000000000000000000000", end: "7ffffffffffffffffffffffffffffffffffffff" },
+  v160: { addr: "1NBC8uXJy1GiJ6drkiZa1WuKn51ps7EPTv", pub: "02e0a8b039282faf6fe0fd769cfbc4b6b4cf8758ba68220eac420e32b91ddfa673", start: "8000000000000000000000000000000000000000", end: "ffffffffffffffffffffffffffffffffffffffff" }
+};
+function applyPreset(pid) {
+  const p = PUZZLES[pid];
+  if(!p) return;
+  V.addr.value = p.addr;
+  V.pub.value = p.pub;
+  V.start.value = p.start;
+  V.end.value = p.end;
+  document.getElementById('form-alert').style.display = 'none'; // Clear errors
+  showMsg("Preset " + pid.replace('v','') + " carregado!", false);
 }
 
 // ─── API ACTIONS ───
