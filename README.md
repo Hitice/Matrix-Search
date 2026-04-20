@@ -15,7 +15,7 @@ Um scanner de alta performance para o puzzle do Bitcoin (SECP256k1), apresentand
 ## Pré-requisitos
 - **GPU NVIDIA**: Arquitetura Maxwell ou mais recente recomendada.
 - **CUDA Toolkit**: Versão 11.0+ (Testado na v13.1).
-- **Python**: Versão 3.10+ para as camadas de Supervisor e API.
+- **Golang**: Versão 1.20+ para o Master Controller e API Server (substituindo o antigo Python).
 - **Compilador MSVC**: Necessário para compilar o núcleo CUDA no Windows.
 
 ## Instalação
@@ -32,27 +32,31 @@ Um scanner de alta performance para o puzzle do Bitcoin (SECP256k1), apresentand
    nvcc -O3 kangaroo.cu -o kangaroo.exe
    ```
 
-3. **Configure o alvo**:
-   Copie a configuração de exemplo e atualize-a com o endereço Bitcoin e a chave pública do alvo.
+3. **Compile o Orquestrador**:
+   ```bash
+   go mod download
+   go build -o secp256-master.exe
+   ```
+
+4. **Configure o alvo**:
+   Copie a configuração de exemplo e atualize-a.
    ```bash
    copy current_target.json.example current_target.json
    ```
 
 ## Uso
 
-Inicie o Supervisor Global:
+Inicie o Core Master:
 ```bash
-python supervisor.py
+.\secp256-master.exe
 ```
 
 Acesse o dashboard em: `http://localhost:8080`
 
 ## Estrutura do Projeto
-- `supervisor.py`: Servidor principal de API e gerenciador de agentes.
-- `cuda_engine.py`: Wrapper Python para o worker GPU; gerencia a persistência.
-- `kangaroo.cu`: Código fonte CUDA para o núcleo de busca.
-- `dashboard.html`: Console web responsivo de página única.
-- `brain_orchestrator.py`: Lógica de detecção de colisão e gerenciamento de hits.
+- `main.go`: Orquestrador monolítico de altíssima performance englobando Web Server, Gestão de Memória e Processamento de Colisão. Substitui inteiramente os antigos orquestradores em Python.
+- `kangaroo.cu`: Código fonte CUDA puro para processamento em larga escala na GPU.
+- `dashboard.html`: Console web responsivo em Single-Page.
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.

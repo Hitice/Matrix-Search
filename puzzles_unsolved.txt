@@ -1,0 +1,31 @@
+=============== BITCOIN PUZZLES UNSOLVED ===============
+
+[Puzzle #135]
+Key Range (HEX): 4000000000000000000000000000000000 : 7fffffffffffffffffffffffffffffffff
+Bitcoin Address: 16RGFo6hjq9ym6Pj7N5H7L1NR1rVPJyw2v
+Public Key:      02145d2611c823a396ef6712ce0f712f09b9b4f3135e3e0aa3230fb9b6d08d1e16
+
+[Puzzle #140]
+Key Range (HEX): 80000000000000000000000000000000000 : fffffffffffffffffffffffffffffffffff
+Bitcoin Address: 1QKBaU6WAeycb3DbKbLBkX7vJiaS8r42Xo
+Public Key:      031f6a332d3c5c4f2de2378c012f429cd109ba07d69690c6c701b6bb87860d6640
+
+[Puzzle #145]
+Key Range (HEX): 1000000000000000000000000000000000000 : 1ffffffffffffffffffffffffffffffffffff
+Bitcoin Address: 19GpszRNUej5yYqxXoLnbZWKew3KdVLkXg
+Public Key:      03afdda497369e219a2c1c369954a930e4d3740968e5e4352475bcffce3140dae5
+
+[Puzzle #150]
+Key Range (HEX): 20000000000000000000000000000000000000 : 3fffffffffffffffffffffffffffffffffffff
+Bitcoin Address: 1MUJSJYtGPVGkBCTqGspnxyHahpt5Te8jy
+Public Key:      03137807790ea7dc6e97901c2bc87411f45ed74a5629315c4e4b03a0a102250c49
+
+[Puzzle #155]
+Key Range (HEX): 400000000000000000000000000000000000000 : 7ffffffffffffffffffffffffffffffffffffff
+Bitcoin Address: 1AoeP37TmHdFh8uN72fu9AqgtLrUwcv2wJ
+Public Key:      035cd1854cae45391ca4ec428cc7e6c7d9984424b954209a8eea197b9e364c05f6
+
+[Puzzle #160]
+Key Range (HEX): 8000000000000000000000000000000000000000 : ffffffffffffffffffffffffffffffffffffffff
+Bitcoin Address: 1NBC8uXJy1GiJ6drkiZa1WuKn51ps7EPTv
+Public Key:      02e0a8b039282faf6fe0fd769cfbc4b6b4cf8758ba68220eac420e32b91ddfa673
