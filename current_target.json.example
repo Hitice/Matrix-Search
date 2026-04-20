@@ -1,0 +1,7 @@
+{
+  "target_address": "1LHtnpd8nU5VHEMkG2TMYYNUjjLc992bps",
+  "target_public_key": "030d282cf2ff922572ca0511af416a18ad2da7f1747fe265dcfcf0334676644f19",
+  "range_start": "20000000",
+  "range_end": "3fffffff",
+  "status": "STOPPED"
+}

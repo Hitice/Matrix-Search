@@ -1,0 +1,23 @@
+# Compiled Binaries
+*.exe
+*.ptx
+*.dll
+*.o
+*.obj
+
+# Databases and Runtime State
+*.db
+*.db-shm
+*.db-wal
+current_target.json
+hit.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs and Tools
+.vscode/
+.idea/
+.DS_Store
