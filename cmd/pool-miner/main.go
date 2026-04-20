@@ -85,7 +85,7 @@ func mineLoop(conn *websocket.Conn) {
 				if strings.HasPrefix(line, "SPD:") {
 					parts := strings.Split(line, ":")
 					if len(parts) >= 2 {
-						totalSteps, _ := strconv.ParseUint(strings.TrimSpace(parts[1]), 16, 64)
+						totalSteps, _ := strconv.ParseUint(strings.TrimSpace(parts[1]), 10, 64)
 						now := time.Now()
 						elapsed := now.Sub(lastSpdUpdate).Seconds()
 
