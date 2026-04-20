@@ -32,31 +32,46 @@ Um scanner de alta performance para o puzzle do Bitcoin (SECP256k1), apresentand
    nvcc -O3 kangaroo.cu -o kangaroo.exe
    ```
 
-3. **Compile o Orquestrador**:
+3. **Compile ambos os Servidores (Master e Miner)**:
    ```bash
-   go mod download
-   go build -o secp256-master.exe
+   go mod tidy
+   go build -o pool-master.exe ./cmd/pool-server
+   go build -o pool-miner.exe ./cmd/pool-miner
    ```
 
-4. **Configure o alvo**:
+4. **Baixe e Instale o Golang** (Caso não tenha):
+   - [Baixar Go (Nativo Win)](https://go.dev/dl/)
+   - Reinicie o terminal após instalar.
+
+5. **Configure o alvo**:
    Copie a configuração de exemplo e atualize-a.
    ```bash
    copy current_target.json.example current_target.json
    ```
 
-## Uso
+## Uso - Master (O Cérebro)
 
-Inicie o Core Master:
+Inicie o Core Master da Pool:
 ```bash
-.\secp256-master.exe
+.\pool-master.exe
 ```
 
-Acesse o dashboard em: `http://localhost:8080`
+Acesse o dashboard Master em: `http://localhost:8080`
+*(Aqui você pode gerenciar qual é o alvo global que todos os seus mineradores trabalharão).*
+
+## Uso - Trabalhadores (A GPU)
+
+Nos computadores que vão rodar, rode o executável do Minerador, passando um IP do Master Server e o número de Wallet (para identificar o PC):
+```bash
+.\pool-miner.exe -pool="ws://localhost:8080/mine" -wallet="Minerador-01"
+```
+Ele se conectará ao seu servidor, pedirá um pedaço do sub-puzzle (`chunk` exclusivo dele) e ligará o poderoso algorítimo `kangaroo.exe` localmente com precisão cirúrgica sem interferir nos outros mineradores pelo mundo.
 
 ## Estrutura do Projeto
-- `main.go`: Orquestrador monolítico de altíssima performance englobando Web Server, Gestão de Memória e Processamento de Colisão. Substitui inteiramente os antigos orquestradores em Python.
-- `kangaroo.cu`: Código fonte CUDA puro para processamento em larga escala na GPU.
-- `dashboard.html`: Console web responsivo em Single-Page.
+- `cmd/pool-server/main.go`: O Cérebro da rede. Contém a API do Dashboard, gere o banco de dados interno e transmite os "Chunks" dividos para as Placas Filhas.
+- `cmd/pool-miner/main.go`: O Operário leve. Ele escuta ao WebSocket do Master, lança o Kangaroo e reporta velocidade em Mkeys/s de forma enxuta e reporta HIS precisos.
+- `kangaroo.cu`: Código fonte CUDA puro para processamento pesado e paralelo em placas GPU.
+- `dashboard.html`: Console web do Master.
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
