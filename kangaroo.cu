@@ -95,7 +95,18 @@ __global__ void secp256k1_search_kernel(uint256_t range_start, uint256_t range_e
 
 int main(int argc, char** argv) {
     if (argc < 4) {
-        std::cout << "[SKW] Usage: kangaroo.exe <range_start_hex> <range_end_hex> <target_x_hex>" << std::endl;
+        std::cout << "[SKW] Usage: kangaroo.exe <range_start_hex> <range_end_hex> <target_x_hex> [device_id]" << std::endl;
+        return 1;
+    }
+
+    int deviceID = 0;
+    if (argc >= 5) {
+        deviceID = atoi(argv[4]);
+    }
+    
+    cudaError_t err = cudaSetDevice(deviceID);
+    if (err != cudaSuccess) {
+        std::cerr << "[SKW] Error setting CUDA device: " << cudaGetErrorString(err) << std::endl;
         return 1;
     }
 

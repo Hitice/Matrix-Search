@@ -36,6 +36,7 @@ var (
 	logMutex    sync.Mutex
 	activeMinerCount int
 	minerMutex  sync.Mutex
+	minerSpeeds map[string]float64 = make(map[string]float64)
 	globalSpeed float64
 	upgrader    = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
 	restartChan = make(chan bool, 1)
@@ -156,6 +157,7 @@ func wsMinerHub(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		minerMutex.Lock()
 		activeMinerCount--
+		delete(minerSpeeds, minerID)
 		minerMutex.Unlock()
 		addLog("POOL", "Miner Disconnected: "+minerID)
 	}()
@@ -201,7 +203,16 @@ func wsMinerHub(w http.ResponseWriter, r *http.Request) {
 				f.Close()
 			} else if evt == "PROGRESS" {
 				spd := result["speed"].(float64)
-				globalSpeed = spd // Simplified: overwrite with latest miner speed. Advanced pools sum this.
+				minerMutex.Lock()
+				minerSpeeds[minerID] = spd
+				
+				// Re-calculate global speed as sum
+				total := 0.0
+				for _, s := range minerSpeeds {
+					total += s
+				}
+				globalSpeed = total
+				minerMutex.Unlock()
 			}
 		}
 	}
