@@ -31,15 +31,27 @@ func main() {
 	fmt.Printf("[SYS] Connecting to Pool: %s\n", *poolAddr)
 	fmt.Printf("[SYS] Wallet/ID: %s\n", *wallet)
 
-	url := fmt.Sprintf("%s?wallet=%s", *poolAddr, *wallet)
-	
-	conn, _, err := websocket.DefaultDialer.Dial(url, nil)
-	if err != nil {
-		fmt.Println("[Fatal] Cannot connect to pool:", err)
-		return
+	for {
+		url := fmt.Sprintf("%s?wallet=%s", *poolAddr, *wallet)
+		fmt.Printf("[SYS] Connecting to Pool: %s\n", url)
+		
+		conn, _, err := websocket.DefaultDialer.Dial(url, nil)
+		if err != nil {
+			fmt.Printf("[Error] Cannot connect to pool (%s). Retrying in 5s...\n", err.Error())
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		
+		fmt.Println("[SYS] Connected to Pool successfully. Waiting for jobs...")
+		mineLoop(conn)
+		
+		fmt.Println("[SYS] Connection lost. Reconnecting in 5s...")
+		time.Sleep(5 * time.Second)
 	}
+}
+
+func mineLoop(conn *websocket.Conn) {
 	defer conn.Close()
-	fmt.Println("[SYS] Connected to Pool successfully. Waiting for jobs...")
 
 	for {
 		var job WSMessage
